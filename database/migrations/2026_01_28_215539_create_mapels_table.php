@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("orang_tua", function (Blueprint $table) {
+        Schema::create('mapels', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_siswa");
-            $table->string("nama");
-            $table->enum("jenis", ["Ayah", "Ibu"])->default("Ayah");
-            $table->string("pekerjaan");
-            $table->string("alamat");
-            $table->string("no_hp");
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists("orang_tua");
+        Schema::dropIfExists('mapels');
     }
 };

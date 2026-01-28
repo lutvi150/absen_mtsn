@@ -54,15 +54,14 @@
 				</div>
 				 -->
                 <!-- <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ed/SMA_Negeri_2_Padang_Panjang.jpg');" ></div> -->
-                <div class="col-lg-7 col-md-5 modal-bg-img"
-                    style="background-image: url('{{ asset('assets/images/logo_belajar.jpg') }}');"></div>
+                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url('{{ asset('assets/images/logo.jpg') }}');"></div>
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
                         <div class="text-center">
                             <img src="{{ asset('assets/images/logotutuwuri.png') }}" style="width: 30%;" alt="wrapkit">
                         </div>
                         <h2 class="mt-3 text-center header-login">Absensi Siswa</h2>
-                        <p class="text-center">Silahkan Login dengan Email dan Password</p>
+                        <p class="text-center">Selamat datang di Sistem Informasi Piket MTSN 5 Kota Padang</p>
 
                         <div id="message_error" hidden class="alert alert-danger alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
