@@ -25,6 +25,7 @@
                                     <th>Alamat</th>
                                     <th>No HP</th>
                                     <th>Foto</th>
+                                    <th>Level Akses</th>
                                     <th>Menu</th>
                                 </tr>
                             </thead>
@@ -153,6 +154,19 @@
                         <label for="no_hp" class="form-label">No HP</label>
                         <input type="text" class="form-control" id="no_hp" name="no_hp"
                             placeholder="Masukkan No HP Guru">
+                        <span class="e-no_hp text-error"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="no_hp" class="form-label">No HP</label>
+                        <input type="text" class="form-control" id="no_hp" name="no_hp"
+                            placeholder="Masukkan No HP Guru">
+                        <span class="e-no_hp text-error"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="no_hp" class="form-label">Level Akses</label>
+                        <select name="level_akses" class="form-control" id="level_akses">
+                            <option value=""></option>
+                        </select>
                         <span class="e-no_hp text-error"></span>
                     </div>
                     <div class="mb-3">

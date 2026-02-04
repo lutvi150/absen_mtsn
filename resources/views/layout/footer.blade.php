@@ -4,7 +4,7 @@
      <!--end::To the end-->
      <!--begin::Copyright--> <strong>
          Copyright &copy; {{ now('Y') }}&nbsp;
-         <a href="/" class="text-decoration-none">Winta</a>.
+         <a href="/" class="text-decoration-none">Aprisia Yolanda</a>.
      </strong>
      All rights reserved.
      <!--end::Copyright-->
