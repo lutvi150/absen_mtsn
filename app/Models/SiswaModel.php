@@ -9,13 +9,9 @@ class SiswaModel extends Model
     protected $table = "siswa";
     protected $fillable = [
         'id_user',
-        'id_kelas',
         'nama_siswa',
         'nisn',
         'jenis_kelamin',
-        'foto',
-        'alamat',
-        'no_hp'
     ];
     public function orangtua()
     {

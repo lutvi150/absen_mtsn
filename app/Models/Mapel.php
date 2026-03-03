@@ -9,4 +9,6 @@ class Mapel extends Model
 {
     /** @use HasFactory<\Database\Factories\MapelFactory> */
     use HasFactory;
+    protected $table = "mapel";
+    protected $fillable = ['nama_mapel'];
 }
