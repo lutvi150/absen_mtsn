@@ -1,11 +1,6 @@
- <footer class="app-footer">
-     <!--begin::To the end-->
-     <div class="float-end d-none d-sm-inline">Dikembangkan oleh</div>
-     <!--end::To the end-->
-     <!--begin::Copyright--> <strong>
-         Copyright &copy; {{ now('Y') }}&nbsp;
-         <a href="/" class="text-decoration-none">Aprisia Yolanda</a>.
-     </strong>
-     All rights reserved.
-     <!--end::Copyright-->
- </footer>
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2025-2026 <a href="#">{{ env('APP_OWNER') }}</a>.</strong> All rights reserved.
+</footer>

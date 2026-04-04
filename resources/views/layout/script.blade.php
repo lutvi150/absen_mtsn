@@ -1,74 +1,48 @@
-<!--begin::Third Party Plugin(OverlayScrollbars)-->
-<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-    crossorigin="anonymous"></script>
-<!--end::Third Party Plugin(OverlayScrollbars)-->
-<!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous">
+<!-- jQuery 2.1.4 -->
+<script src="{{ asset('assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
 </script>
-<!--end::Required Plugin(popperjs for Bootstrap 5)-->
-<!--begin::Required Plugin(Bootstrap 5)-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-<!--end::Required Plugin(Bootstrap 5)-->
-<!--begin::Required Plugin(AdminLTE)-->
-<script src="{{ asset('assets/js/adminlte.js') }}"></script>
-<!--end::Required Plugin(AdminLTE)-->
-<!--begin::OverlayScrollbars Configure-->
-{{-- jquer --}}
-<script src="{{ asset('assets/jquery/dist/jquery.js') }}"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+<!-- Morris.js charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+{{-- <script src="{{ asset('assets/plugins/morris/morris.min.js') }}"></script> --}}
+<!-- Sparkline -->
+<script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+<!-- jvectormap -->
+<script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{{ asset('assets/plugins/knob/jquery.knob.js') }}"></script>
+<!-- daterangepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+<script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<!-- datepicker -->
+<script src="{{ asset('assets/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+<!-- Slimscroll -->
+<script src="{{ asset('assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<!-- FastClick -->
+<script src="{{ asset('assets/plugins/fastclick/fastclick.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('assets/dist/js/app.min.js') }}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset('assets/dist/js/demo.js') }}"></script>
 {{-- jquery form --}}
 <script src="{{ asset('assets/jqform/src/jquery.form.js') }}"></script>
 {{-- notiflix --}}
 <script src="{{ asset('assets/notiflix/build/notiflix-aio.js') }}"></script>
-{{-- datatable --}}
-<script src="{{ asset('assets/DataTables/datatables.js') }}"></script>
-<script>
-    const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper"
-    const Default = {
-        scrollbarTheme: "os-theme-light",
-        scrollbarAutoHide: "leave",
-        scrollbarClickScroll: true
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER)
-        if (
-            sidebarWrapper &&
-            OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined
-        ) {
-            OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-                scrollbars: {
-                    theme: Default.scrollbarTheme,
-                    autoHide: Default.scrollbarAutoHide,
-                    clickScroll: Default.scrollbarClickScroll
-                }
-            })
-        }
-    })
-</script>
-<!--end::OverlayScrollbars Configure-->
-<!-- Image path runtime fix -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Find the link tag for the main AdminLTE CSS file.
-        const cssLink = document.querySelector('link[href*="css/adminlte.css"]');
-        if (!cssLink) {
-            return; // Exit if the link isn't found
-        }
+{{-- reusable code --}}
+<script src="{{ asset('assets/js/reusable.js') }}"></script>
 
-        // Extract the base path from the CSS href.
-        // e.g., from "../css/adminlte.css", we get "../"
-        // e.g., from "./css/adminlte.css", we get "./"
-        const cssHref = cssLink.getAttribute('href');
-        const deploymentPath = cssHref.slice(0, cssHref.indexOf('css/adminlte.css'));
-
-        // Find all images with absolute paths and fix them.
-        document.querySelectorAll('img[src^="/assets/"]').forEach(img => {
-            const originalSrc = img.getAttribute('src');
-            if (originalSrc) {
-                const relativeSrc = originalSrc.slice(1); // Remove leading '/'
-                img.src = deploymentPath + relativeSrc;
-            }
-        });
-    });
+<script>
+    const BASE_URL = "{{ url('/') }}";
     // use for error
     error_function = (xhr) => {
         {
@@ -76,7 +50,7 @@
             if (status === 422) {
                 let errors = xhr.responseJSON.errors;
 
-                $.each(errors, function (key, value) {
+                $.each(errors, function(key, value) {
                     $(`.e-${key}`).text(value[0]);
                 });
             } else if (status === 404) {

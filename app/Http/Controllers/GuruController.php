@@ -21,12 +21,7 @@ class GuruController extends Controller
     {
         $title = "Data Guru";
         $guru  = GuruModel::with('guru')->get();
-        // return response()->json([
-        //     'status' => 'success',
-        //     'data' => $guru,
-        //     'message' => 'Data guru retrieved successfully.'
-        // ], 200);exit;
-        return view('admin.data_guru', compact("guru", "title"));
+        return view('guru.index', compact("guru", "title"));
     }
 
     /**

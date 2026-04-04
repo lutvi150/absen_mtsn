@@ -14,8 +14,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
-
 -- Dumping structure for table absen.absensi
 CREATE TABLE IF NOT EXISTS `absensi` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -34,28 +32,6 @@ CREATE TABLE IF NOT EXISTS `absensi` (
 -- Dumping data for table absen.absensi: ~0 rows (approximately)
 DELETE FROM `absensi`;
 
--- Dumping structure for table absen.cache
-CREATE TABLE IF NOT EXISTS `cache` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.cache: ~0 rows (approximately)
-DELETE FROM `cache`;
-
--- Dumping structure for table absen.cache_locks
-CREATE TABLE IF NOT EXISTS `cache_locks` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.cache_locks: ~0 rows (approximately)
-DELETE FROM `cache_locks`;
-
 -- Dumping structure for table absen.check_absensi
 CREATE TABLE IF NOT EXISTS `check_absensi` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -70,22 +46,6 @@ CREATE TABLE IF NOT EXISTS `check_absensi` (
 
 -- Dumping data for table absen.check_absensi: ~0 rows (approximately)
 DELETE FROM `check_absensi`;
-
--- Dumping structure for table absen.failed_jobs
-CREATE TABLE IF NOT EXISTS `failed_jobs` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.failed_jobs: ~0 rows (approximately)
-DELETE FROM `failed_jobs`;
 
 -- Dumping structure for table absen.guru
 CREATE TABLE IF NOT EXISTS `guru` (
@@ -108,132 +68,39 @@ CREATE TABLE IF NOT EXISTS `guru` (
 -- Dumping data for table absen.guru: ~0 rows (approximately)
 DELETE FROM `guru`;
 
--- Dumping structure for table absen.job_batches
-CREATE TABLE IF NOT EXISTS `job_batches` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `total_jobs` int NOT NULL,
-  `pending_jobs` int NOT NULL,
-  `failed_jobs` int NOT NULL,
-  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci,
-  `cancelled_at` int DEFAULT NULL,
-  `created_at` int NOT NULL,
-  `finished_at` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.job_batches: ~0 rows (approximately)
-DELETE FROM `job_batches`;
-
--- Dumping structure for table absen.jobs
-CREATE TABLE IF NOT EXISTS `jobs` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attempts` tinyint unsigned NOT NULL,
-  `reserved_at` int unsigned DEFAULT NULL,
-  `available_at` int unsigned NOT NULL,
-  `created_at` int unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `jobs_queue_index` (`queue`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.jobs: ~0 rows (approximately)
-DELETE FROM `jobs`;
-
 -- Dumping structure for table absen.kelas
 CREATE TABLE IF NOT EXISTS `kelas` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `nama_kelas` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_guru` bigint unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `kelas_nama_kelas_unique` (`nama_kelas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `kelas_nama_kelas_unique` (`nama_kelas`),
+  KEY `kelas_id_guru_foreign` (`id_guru`),
+  CONSTRAINT `kelas_id_guru_foreign` FOREIGN KEY (`id_guru`) REFERENCES `guru` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table absen.kelas: ~0 rows (approximately)
 DELETE FROM `kelas`;
+INSERT INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
+	(1, 'IX.1', NULL, '2026-03-25 01:43:31', '2026-03-25 01:43:31'),
+	(2, 'IX.2', NULL, '2026-03-25 01:44:38', '2026-03-25 01:44:38');
 
--- Dumping structure for table absen.mapels
-CREATE TABLE IF NOT EXISTS `mapels` (
+-- Dumping structure for table absen.mapel
+CREATE TABLE IF NOT EXISTS `mapel` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `nama_mapel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.mapels: ~0 rows (approximately)
-DELETE FROM `mapels`;
-
--- Dumping structure for table absen.migrations
-CREATE TABLE IF NOT EXISTS `migrations` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.migrations: ~0 rows (approximately)
-DELETE FROM `migrations`;
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-	(1, '0001_01_01_000000_create_users_table', 1),
-	(2, '0001_01_01_000001_create_cache_table', 1),
-	(3, '0001_01_01_000002_create_jobs_table', 1),
-	(4, '2025_07_06_102612_create_personal_access_tokens_table', 1),
-	(5, '2025_07_09_071454_guru', 1),
-	(6, '2025_07_09_091149_kelas', 1),
-	(7, '2025_07_09_091203_siswa', 1),
-	(8, '2025_07_21_042356_absensi', 1),
-	(9, '2025_07_21_042803_check_absensi', 1),
-	(10, '2026_01_28_215539_create_mapels_table', 1);
-
--- Dumping structure for table absen.password_reset_tokens
-CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.password_reset_tokens: ~0 rows (approximately)
-DELETE FROM `password_reset_tokens`;
-
--- Dumping structure for table absen.personal_access_tokens
-CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
-  `last_used_at` timestamp NULL DEFAULT NULL,
-  `expires_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.personal_access_tokens: ~0 rows (approximately)
-DELETE FROM `personal_access_tokens`;
-
--- Dumping structure for table absen.sessions
-CREATE TABLE IF NOT EXISTS `sessions` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint unsigned DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_activity` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `sessions_user_id_index` (`user_id`),
-  KEY `sessions_last_activity_index` (`last_activity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dumping data for table absen.sessions: ~0 rows (approximately)
-DELETE FROM `sessions`;
+-- Dumping data for table absen.mapel: ~2 rows (approximately)
+DELETE FROM `mapel`;
+INSERT INTO `mapel` (`id`, `nama_mapel`, `created_at`, `updated_at`) VALUES
+	(1, 'IPA', '2026-03-25 08:08:51', '2026-03-25 08:08:51'),
+	(3, 'IPS', '2026-03-25 08:16:15', '2026-03-25 08:16:15');
 
 -- Dumping structure for table absen.siswa
 CREATE TABLE IF NOT EXISTS `siswa` (
@@ -241,17 +108,19 @@ CREATE TABLE IF NOT EXISTS `siswa` (
   `nama_siswa` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nisn` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
-  `foto` text COLLATE utf8mb4_unicode_ci,
-  `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_kelas` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `siswa_nisn_unique` (`nisn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table absen.siswa: ~0 rows (approximately)
 DELETE FROM `siswa`;
+INSERT INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `id_kelas`, `created_at`, `updated_at`) VALUES
+	(1, 'Ahmad Rizky Pratama', '0045123456', 'L', 1, '2026-03-25 04:44:44', '2026-03-25 04:44:44'),
+	(2, 'Dimas Saputra', '0045123457', 'L', 1, '2026-03-25 04:52:00', '2026-03-25 04:52:00'),
+	(3, 'Fajar Nugroho', '0045123458', 'L', 1, '2026-03-25 04:52:57', '2026-03-25 04:52:57');
 
 -- Dumping structure for table absen.users
 CREATE TABLE IF NOT EXISTS `users` (

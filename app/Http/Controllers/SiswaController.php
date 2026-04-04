@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SiswaRequest;
 use App\Models\KelasModel;
 use App\Models\OrangtuaModel;
 use App\Models\SiswaModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SiswaController extends Controller
 {
@@ -17,13 +18,8 @@ class SiswaController extends Controller
     public function index()
     {
         $title = "Data Siswa";
-        $siswa = SiswaModel::with(['kelas', 'orangtua'])->select('id', 'id_kelas', 'nama_siswa', 'nisn', 'jenis_kelamin', 'foto', 'alamat')->get();
-        // return response()->json([
-        //     'status'  => true,
-        //     'message' => 'Data siswa retrieved successfully.',
-        //     'data'    => $siswa,
-        // ], 200);
-        return view('admin.data_siswa', compact("siswa", "title"));
+        $siswa = SiswaModel::with(['kelas'])->select('id', 'id_kelas', 'nama_siswa', 'nisn', 'jenis_kelamin')->get();
+        return view('siswa.index', compact("siswa", "title"));
     }
 
     /**
@@ -39,59 +35,10 @@ class SiswaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SiswaRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nama_siswa'             => 'required|string|max:100',
-            'jenis_kelamin'          => 'required|in:L,P', // sesuaikan value radio
-            'nis_siswa'              => 'required|numeric|unique:siswa,nisn',
-            'alamat_siswa'           => 'required|string|max:255',
-            'id_kelas'               => 'required|exists:kelas,id',
-
-            'nama_orang_tua_lk'      => 'required|string|max:100',
-            'pekerjaan_orang_tua_lk' => 'required|string|max:100',
-            'alamat_orang_tua_lk'    => 'required|string|max:255',
-            'no_telp_orang_tua_lk'   => 'required|digits_between:10,15',
-
-            'nama_orang_tua_pr'      => 'required|string|max:100',
-            'pekerjaan_orang_tua_pr' => 'required|string|max:100',
-            'alamat_orang_tua_pr'    => 'required|string|max:255',
-            'no_telp_orang_tua_pr'   => 'required|digits_between:10,15',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Validasi gagal.',
-                'errors'  => $validator->errors(),
-            ], 422);
-        }
-
-        // Simpan data (contoh)
-        $siswa = SiswaModel::create([
-            'id_kelas'       => $request->id_kelas,
-            'nama_siswa'     => $request->nama_siswa,
-            'nisn'           => $request->nis_siswa,
-            'jenis_kelamin'  => $request->jenis_kelamin,
-            'foto'           => $request->foto ?? null, // handle foto upload if needed
-            'alamat'         => $request->alamat_siswa,
-        ]);
-        $idSiswa = $siswa->id;
-        $orangTuaLk = OrangtuaModel::create([
-            'id_siswa'   => $idSiswa,
-            'nama'       => $request->nama_orang_tua_lk,
-            'jenis'      => 'Ayah',
-            'pekerjaan'  => $request->pekerjaan_orang_tua_lk,
-            'alamat'     => $request->alamat_orang_tua_lk,
-            'no_hp'      => $request->no_telp_orang_tua_lk,
-        ]);
-        $orangTuaPr = OrangtuaModel::create([
-            'id_siswa'   => $idSiswa,
-            'nama'       => $request->nama_orang_tua_pr,
-            'jenis'      => 'Ibu',
-            'pekerjaan'  => $request->pekerjaan_orang_tua_pr,
-            'alamat'     => $request->alamat_orang_tua_pr,
-            'no_hp'      => $request->no_telp_orang_tua_pr,
-        ]);
+        $data=$request->validated();
+        $siswa = SiswaModel::create($data);
         return response()->json([
             'status'  => true,
             'message' => 'Data berhasil disimpan.',

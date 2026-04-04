@@ -1,48 +1,45 @@
-<ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation"
-    data-accordion="false" id="navigation">
-    @if (Auth::user()->role == 'admin')
-    <li class="nav-item">
-        <a href="{{ route('dashboard') }}" class="nav-link">
-            <i class="nav-icon bi bi-speedometer"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('data-guru') }}" class="nav-link">
-            <i class="nav-icon bi bi-people"></i>
-            <p>Data Guru</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('data-siswa') }}" class="nav-link">
-            <i class="nav-icon bi bi-person-circle"></i>
-            <p>Data Siswa</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('kelas') }}" class="nav-link">
-            <i class="nav-icon bi bi-person-check"></i>
-            <p>Data Kelas</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('admin-absensi') }}" class="nav-link">
-            <i class="nav-icon bi bi-person-check"></i>
-            <p>Absensi</p>
-        </a>
-    </li>
-    @elseif (Auth::user()->role == 'guru')
-     <li class="nav-item">
-        <a href="{{ route('guru-dashboard') }}" class="nav-link">
-            <i class="nav-icon bi bi-speedometer"></i>
-            <p>Dashboard</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ route('guru-absensi') }}" class="nav-link">
-            <i class="nav-icon bi bi-person-check"></i>
-            <p>Absensi</p>
-        </a>
-    </li>
-    @endif
-</ul>
+<aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="{{ asset('assets/images/login_user.jpeg') }}" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+              <p>{{ Session::get('data.name') }}</p>
+              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+          </div>
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+          <!-- /.search form -->
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <li class="header">MENU</li>
+            
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> <span>DASHBOARD</span></a></li>
+            <li class="active treeview">
+              <a href="#">
+                <i class="fa fa-book"></i> <span>MASTER DATA</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{ route('guru') }}"><i class="fa fa-graduation-cap"></i> DATA GURU</a></li>
+                <li><a href="{{ route('siswa') }}"><i class="fa fa-users"></i> DATA SISWA</a></li>
+                <li><a href="{{ route('mapel') }}"><i class="fa fa-book"></i> DATA MAPEL</a></li>
+                <li><a href="{{route('jadwal-piket')}}"><i class="fa fa-calendar"></i> JADWAL PIKET</a></li>
+                <li><a href="{{ route('kelas') }}"><i class="fa fa-home"></i> KELAS</a></li>
+              </ul>
+            </li>
+            <li><a href="{{ route('piket') }}"><i class="fa fa-calendar"></i> <span>PIKET</span></a></li>
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>

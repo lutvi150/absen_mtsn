@@ -11,20 +11,15 @@ class SiswaModel extends Model
         'id_user',
         'nama_siswa',
         'nisn',
+        'kelas',
         'jenis_kelamin',
+        'id_kelas',
+        'foto',
     ];
-    public function orangtua()
-    {
-        return $this->hasMany(OrangtuaModel::class, 'id_siswa');
-    }
 
     public function kelas()
     {
         return $this->belongsTo(KelasModel::class, 'id_kelas');
     }
-    function checkAbsensi() {}
     public $timestamps = true;
-    // public function siswa(){
-    //     return $this->belongsTo(KelasModel::class,'id_kelas');
-    // }
 }

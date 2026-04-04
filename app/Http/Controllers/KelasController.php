@@ -16,8 +16,7 @@ class KelasController extends Controller
     {
         $title = "Data Kelas";
         $kelas = KelasModel::withCount('siswa')->get();
-        // dd($kelas);
-        return view('admin.data_kelas', compact("kelas", "title"));
+        return view('kelas.index', compact("kelas", "title"));
     }
 
     /**
