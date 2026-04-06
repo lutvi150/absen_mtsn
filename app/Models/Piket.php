@@ -9,4 +9,11 @@ class Piket extends Model
 {
     /** @use HasFactory<\Database\Factories\PiketFactory> */
     use HasFactory;
+    protected $table = 'piket';
+    protected $fillable = [
+        'tanggal',
+        'bulan',
+        'tahun',
+    ];
+    public $timestamps = true;
 }

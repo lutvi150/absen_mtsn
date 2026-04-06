@@ -94,8 +94,8 @@ Route::prefix('guru')->group(function(){
      // use for teacher
     Route::get('/', [GuruController::class, 'index'])->name('guru');
     Route::post('guru-add', [GuruController::class, 'store'])->name('guru-add');
-    // // Route::get('guru/{guruModel}/edit', [GuruController::class, 'edit'])->name('guru-edit');
-    // Route::get('guru-delete/{id}', [GuruController::class, 'destroy'])->name('guru-delete');
+    Route::get('guru-edit/{id}', [GuruController::class, 'edit'])->name('guru-edit');
+    Route::get('guru-delete/{id}', [GuruController::class, 'destroy'])->name('guru-delete');
     // // teacher ajac
     // Route::get('api/guru/data', [GuruController::class, 'getGuru'])->name('get-guru');
     // Route::post('api/password/edit', [LoginController::class, 'changePassword'])->name('ubah-password');
@@ -114,6 +114,7 @@ Route::prefix('mapel')->group(function(){
 });
 Route::prefix('jadwal-piket')->group(function(){
     Route::get('/',[PiketController::class,'index'])->name('jadwal-piket');
+    Route::get('/{bulan}/{tahun}',[PiketController::class,'piketDetail'])->name('piket.show');
 });
 Route::prefix('kelas')->group(function(){
     Route::get('/',[KelasController::class,'index'])->name('kelas');

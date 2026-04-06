@@ -45,23 +45,11 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ strtoupper($item['nama_guru']) }}</td>
                                             <td>{{ $item->nip }}</td>
-                                            <td>{{ $item->jenis_kelamin }}</td>
+                                            <td><label for="" class="label {{ $item->jenis_kelamin=="L" ? 'label-primary' : 'label-danger' }}">{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</label></td>
                                             <td>{{ $item->alamat }}</td>
                                             <td>{{ $item->no_hp }}</td>
                                             <td>
-                                                @php
-                                                    $fotoPath = public_path('uploads/guru/' . $item->foto);
-                                                @endphp
-                                                @if (empty($item->foto) || !file_exists($fotoPath))
-                                                @php
-                                                    $foto='assets/images/default.png';
-                                                @endphp
-                                                @else
-                                                @php
-                                                    $foto='uploads/guru/' . $item->foto;
-                                                @endphp
-                                                @endif
-                                                <img src="{{ asset($foto) }}" alt="Foto Guru" class="foto-siswa">
+                                               <img src="{{ $item->foto_url }}" alt="Foto Guru" class="foto-siswa">
                                             </td>
                                             <td style="width:40px">
                                                 <button onclick="delete_data({{ $item->id }})"
@@ -140,19 +128,6 @@
                         <span class="e-no_hp text-error"></span>
                     </div>
                     <div class="mb-3">
-                        <label for="no_hp" class="form-label">No HP</label>
-                        <input type="text" class="form-control" id="no_hp" name="no_hp"
-                            placeholder="Masukkan No HP Guru">
-                        <span class="e-no_hp text-error"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="no_hp" class="form-label">Level Akses</label>
-                        <select name="level_akses" class="form-control" id="level_akses">
-                            <option value=""></option>
-                        </select>
-                        <span class="e-no_hp text-error"></span>
-                    </div>
-                    <div class="mb-3">
                         <label for="foto" class="form-label">Foto</label>
                         <input type="file" class="form-control" id="foto" name="foto">
                         <span class="e-foto text-error"></span>
@@ -174,48 +149,22 @@
     <script>
         $(function() {
             $("#example1").DataTable();
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
         });
     </script>
     <script>
-        $(document).ready(function() {
-            get_kelas();
-        });
-        // data kelas
-        get_kelas = () => {
-            $.ajax({
-                type: "GET",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: `${BASE_URL}/api/kelas`,
-                dataType: "JSON",
-                success: function(response) {
-                    if (response) {
-                        let options = '<option value="">Pilih Kelas</option>';
-                        $.each(response, function(key, value) {
-                            options += `<option value="${value.id}">${value.nama_kelas}</option>`;
-                        });
-                        $('#kelas').html(options);
-                    }
-                }
-            });
-        }
+        
         show_modal = () => {
+            sessionStorage.setItem('TY', 'POST');
             $('.modal-add-title').text('Tambah Data Siswa');
+            $("#form-add")[0].reset();
+            $("#form-add").attr('action', `{{ route('guru-add') }}`);
+            $('.text-error').text('');
             $('#modal-add').modal('show');
         }
         store_data = () => {
             $(".text-error").text('');
             $("#form-add").ajaxForm({
-                type: "POST",
+                type: sessionStorage.getItem('TY'),
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -247,16 +196,27 @@
             }).submit();
         }
         edit_data = (id) => {
+            $(".text-error").text('');
+            $("#form-add")[0].reset();
+            $("#form-add").attr('action', `${BASE_URL}/api/guru/${id}`);
+            sessionStorage.setItem('TY', 'PUT');
             $.ajax({
                 type: "GET",
-                url: `${BASE_URL}/api/siswa/${id}`,
+                url: `${BASE_URL}/api/guru/${id}`,
                 dataType: "JSON",
                 success: function(response) {
-                    $('.modal-add-title').text('Edit Data Siswa');
-                    $('#nama_siswa').val(response.data.nama_siswa);
-                    $('#nisn').val(response.data.nisn);
-                    $('#jenis_kelamin').val(response.data.jenis_kelamin);
-                    $('#kelas').val(response.data.id_kelas);
+                    let jenis_kelamin=`
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="L" ${response.data.jenis_kelamin == 'L' ? 'selected' : ''}>Laki-laki</option>
+                    <option value="P" ${response.data.jenis_kelamin == 'P' ? 'selected' : ''}>Perempuan</option>
+                    `;
+                    $('#jenis_kelamin').html(jenis_kelamin);
+                    $('.modal-add-title').text('Edit Data Guru');
+                    $("#email").val(response.data.guru.email);
+                    $('#nama_guru').val(response.data.nama_guru);
+                    $('#nip').val(response.data.nip);
+                    $('#alamat').val(response.data.alamat);
+                    $('#no_hp').val(response.data.no_hp);
                     $('#modal-add').modal('show');
                 },
                 error: function(xhr) {
@@ -276,12 +236,12 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: `${BASE_URL}/api/siswa/${id}`,
+                        url: `${BASE_URL}/api/guru/${id}`,
                         success: function(response) {
                             if (response.status == true) {
                                 Notiflix.Report.success(
                                     `Berhasil`,
-                                    `"Data Kelas Berhasil Dihapus." <br/><br/>- Admin`,
+                                    `"Data Guru Berhasil Dihapus." <br/><br/>- Admin`,
                                     `Okay`,
                                 );
                                 location.reload();

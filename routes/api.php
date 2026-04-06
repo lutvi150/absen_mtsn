@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\KelasController;
 use App\Http\Controllers\Api\SiswaController;
 use Illuminate\Http\Request;
@@ -21,3 +22,11 @@ Route::prefix('siswa')->group(function () {
     Route::put('/{id}', [SiswaController::class, 'update']);
     Route::delete('/{id}', [SiswaController::class, 'destroy']);
 });
+Route::prefix('guru')->group(function () {
+    Route::get('/', [GuruController::class, 'index']);
+    Route::post('/', [GuruController::class, 'store']);
+    Route::get('/{id}', [GuruController::class, 'show']);
+    Route::put('/{id}', [GuruController::class, 'update']);
+    Route::delete('/{id}', [GuruController::class, 'destroy']);
+});
+

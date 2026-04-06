@@ -43,7 +43,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ strtoupper($item['nama_siswa']) }}</td>
                                             <td>{{ $item->nisn }}</td>
-                                            <td>{{ $item->jenis_kelamin }}</td>
+                                            <td><label for="" class="label {{ $item->jenis_kelamin=="L" ? 'label-primary' : 'label-danger' }}">{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</label></td>
                                             <td><img class="foto-siswa" src="{{ asset('assets/images/default.png') }}" alt="" srcset=""></td>
                                             <td style="width:40px">
                                                 <button onclick="delete_data({{ $item->id }})"

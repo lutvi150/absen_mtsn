@@ -12,7 +12,22 @@ class PiketController extends Controller
      */
     public function index()
     {
-        return view('piket.index');
+        $title="Piket";
+        $bulan=[
+            '1' => 'Januari',
+            '2' => 'Februari',
+            '3' => 'Maret',
+            '4' => 'April',
+            '5' => 'Mei',
+            '6' => 'Juni',
+            '7' => 'Juli',
+            '8' => 'Agustus',
+            '9' => 'September',
+            '10' => 'Oktober',
+            '11' => 'November',
+            '12' => 'Desember',
+        ];
+        return view('piket.index',compact('title','bulan'));
     }
 
     /**
@@ -61,5 +76,13 @@ class PiketController extends Controller
     public function destroy(Piket $piket)
     {
         //
+    }
+    public function piketDetail($bulan,$tahun) {
+        $title="Piket Detail";
+        $piket = Piket::with('guru')->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun)->get();
+        return response()->json([
+            'piket'=>$piket,
+        ]);exit;
+        return view('piket.detail',compact('title','piket'));
     }
 }
