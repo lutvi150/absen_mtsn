@@ -23,7 +23,8 @@
                             <h3 class="box-title">Data Piket</h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
-                            <table id="example1" class="table table-bordered table-striped">
+
+                            <table id="example1" hidden class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th style="width: 10px">No.</th>
@@ -53,10 +54,16 @@
         </section><!-- /.content -->
     </div>
 @endsection
+@section('css')
+    <!-- fullCalendar 2.2.5-->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/fullcalendar/fullcalendar.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/fullcalendar/fullcalendar.print.css')}}" media="print">
+@endsection
 @section('script')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/dataTables.bootstrap.css') }}">
     <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/fullcalendar/fullcalendar.js') }}"></script>
     <script>
         $(function() {
             // $("#example1").DataTable();

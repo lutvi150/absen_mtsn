@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('piket', function (Blueprint $table) {
             $table->id();
-            $table->integer('tanggal');
-            $table->integer('bulan');
-            $table->integer('tahun');
+            $table->date('tanggal');
+            $table->string('status_libur', 10);
+            $table->string('hari', 20);
             $table->timestamps();
         });
     }
