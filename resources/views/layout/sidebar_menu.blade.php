@@ -38,7 +38,7 @@
                 <li><a href="{{ route('kelas') }}"><i class="fa fa-home"></i> KELAS</a></li>
               </ul>
             </li>
-            <li><a href="{{ route('piket') }}"><i class="fa fa-calendar"></i> <span>PIKET</span></a></li>
+            <li><a href="{{ route('rekap-piket') }}"><i class="fa fa-calendar"></i> <span>PIKET</span></a></li>
           </ul>
         </section>
         <!-- /.sidebar -->

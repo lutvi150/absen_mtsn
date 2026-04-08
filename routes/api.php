@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\Dashboard;
 use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\KelasController;
+use App\Http\Controllers\Api\PiketController;
 use App\Http\Controllers\Api\SiswaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +16,10 @@ Route::prefix('admin')->group(function () {
 });
 Route::prefix('kelas')->group(function () {
     Route::get('/', [KelasController::class, 'index']);
+    Route::post('/', [KelasController::class, 'store']);
+    Route::get('/{id}', [KelasController::class, 'show']);
+    Route::put('/{id}', [KelasController::class, 'update']);
+    Route::delete('/{id}', [KelasController::class, 'destroy']);
 });
 Route::prefix('siswa')->group(function () {
     Route::get('/', [SiswaController::class, 'index']);
@@ -29,4 +35,14 @@ Route::prefix('guru')->group(function () {
     Route::put('/{id}', [GuruController::class, 'update']);
     Route::delete('/{id}', [GuruController::class, 'destroy']);
 });
-
+Route::prefix('piket')->group(function () {
+    Route::get('/',[PiketController::class,'index']);
+    Route::post('/', [PiketController::class, 'store'])->name('api-piket-add');
+    Route::get('/{id}', [PiketController::class, 'show']);
+    Route::put('/{id}', [PiketController::class, 'update']);
+    Route::delete('/{id}', [PiketController::class, 'destroy']);
+});
+Route::prefix('dashboard')->group(function () {
+    Route::get('/', [GuruController::class, 'dashboard']);
+    Route::get('chart-siswa', [Dashboard::class, 'chartSiswa']);
+});

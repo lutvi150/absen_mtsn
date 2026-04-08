@@ -25,18 +25,30 @@ DELETE FROM `absensi`;
 -- Dumping data for table absen.check_absensi: ~0 rows (approximately)
 DELETE FROM `check_absensi`;
 
--- Dumping data for table absen.guru: ~3 rows (approximately)
+-- Dumping data for table absen.guru: ~2 rows (approximately)
 DELETE FROM `guru`;
 INSERT INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
-	(1, 3, 'SRI RENGGAYONI', '198410122009122001', 'P', '1775461855_3x4.jpg', 'Padang', '082285498005', '2026-04-06 07:50:55', '2026-04-06 07:50:55'),
+	(1, 3, 'SRI RENGGAYONI', '198410122009122001', 'L', '1775461855_3x4.jpg', 'Padang', '082285498005', '2026-04-06 07:50:55', '2026-04-08 08:07:18'),
 	(2, 4, 'DINY MAULINA', '199201182005012004', 'P', '1775461920_WhatsApp Image 2026-03-25 at 16.43.39.jpeg', 'Padang', '082285498005', '2026-04-06 07:52:00', '2026-04-06 07:52:00'),
 	(3, 5, 'ELSANORA WIRANTI', '199109152020122021', 'P', NULL, 'Padang', '082285498005', '2026-04-06 07:52:44', '2026-04-06 07:52:44');
 
--- Dumping data for table absen.kelas: ~2 rows (approximately)
+-- Dumping data for table absen.jadwal_piket: ~2 rows (approximately)
+DELETE FROM `jadwal_piket`;
+INSERT INTO `jadwal_piket` (`id`, `tanggal`, `id_guru`, `created_at`, `updated_at`) VALUES
+	(1, '2026-04-07', 1, '2026-04-08 05:41:27', '2026-04-08 05:41:27'),
+	(3, '2026-04-06', 1, '2026-04-08 05:52:16', '2026-04-08 05:52:16'),
+	(4, '2026-04-09', 2, '2026-04-08 06:04:10', '2026-04-08 06:04:10'),
+	(5, '2026-04-02', 3, '2026-04-08 06:10:26', '2026-04-08 06:10:26'),
+	(6, '2026-04-03', 2, '2026-04-08 08:05:04', '2026-04-08 08:05:04');
+
+-- Dumping data for table absen.kelas: ~4 rows (approximately)
 DELETE FROM `kelas`;
 INSERT INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
-	(1, 'IX.1', NULL, '2026-03-25 01:43:31', '2026-03-25 01:43:31'),
-	(2, 'IX.2', NULL, '2026-03-25 01:44:38', '2026-03-25 01:44:38');
+	(1, 'IX.1', 1, '2026-03-25 01:43:31', '2026-04-08 07:19:08'),
+	(2, 'IX.2', 2, '2026-03-25 01:44:38', '2026-04-08 07:19:16'),
+	(4, 'IX.3', NULL, '2026-04-08 07:59:24', '2026-04-08 07:59:24'),
+	(6, 'IX.4', NULL, '2026-04-08 08:02:47', '2026-04-08 08:02:47'),
+	(8, 'IX.5', NULL, '2026-04-08 08:03:49', '2026-04-08 08:03:49');
 
 -- Dumping data for table absen.mapel: ~2 rows (approximately)
 DELETE FROM `mapel`;
@@ -47,7 +59,11 @@ INSERT INTO `mapel` (`id`, `nama_mapel`, `created_at`, `updated_at`) VALUES
 -- Dumping data for table absen.migrations: ~1 rows (approximately)
 DELETE FROM `migrations`;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-	(1, '2026_03_25_075804_create_pikets_table', 1);
+	(2, '2026_03_25_075804_create_pikets_table', 1),
+	(3, '2026_04_08_123814_jadwal_piket', 2);
+
+-- Dumping data for table absen.piket: ~0 rows (approximately)
+DELETE FROM `piket`;
 
 -- Dumping data for table absen.siswa: ~3 rows (approximately)
 DELETE FROM `siswa`;
@@ -56,7 +72,7 @@ INSERT INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `id_kelas`, `c
 	(2, 'Dimas Saputra', '0045123457', 'L', 1, '2026-03-25 04:52:00', '2026-03-25 04:52:00'),
 	(3, 'Fajar Nugroho', '0045123458', 'L', 1, '2026-03-25 04:52:57', '2026-03-25 04:52:57');
 
--- Dumping data for table absen.users: ~5 rows (approximately)
+-- Dumping data for table absen.users: ~4 rows (approximately)
 DELETE FROM `users`;
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$12$2MVLtdWaWVusG1KKOxuUdOG5peACsErLFisoLPus9AIXGG6Ga/1Di', 'admin', NULL, '2026-01-28 16:09:47', '2026-01-28 16:09:47'),

@@ -21,7 +21,7 @@
                     <!-- small box -->
                     <div class="small-box bg-aqua">
                         <div class="inner">
-                            <h3>0</h3>
+                            <h3>{{ $siswa }}</h3>
                             <p>Jumlah Siswa</p>
                         </div>
                         <div class="icon">
@@ -35,7 +35,7 @@
                     <!-- small box -->
                     <div class="small-box bg-green">
                         <div class="inner">
-                            <h3>0</h3>
+                            <h3>{{ $guru }}</h3>
                             <p>Jumlah Guru</p>
                         </div>
                         <div class="icon">
@@ -49,7 +49,7 @@
                     <!-- small box -->
                     <div class="small-box bg-yellow">
                         <div class="inner">
-                            <h3>0</h3>
+                            <h3>{{ $kelas }}</h3>
                             <p>Jumlah Kelas</p>
                         </div>
                         <div class="icon">
@@ -106,17 +106,27 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         $(document).ready(function () {
-            siswa_chart();
+            get_data_chart_siswa();
         });
-        siswa_chart = () => {
+        get_data_chart_siswa=()=>{
+            $.ajax({
+                type: "GET",
+                url: `${BASE_URL}/api/dashboard/chart-siswa`,
+                dataType: "JSON",
+                success: function (response) {
+                    siswa_chart(response);
+                }
+            });
+        }
+        siswa_chart = (response) => {
             const ctx = document.getElementById('myChart');
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['IX', 'X', 'XI', ],
+                    labels: response.dataKelas,
                     datasets: [{
                         label: 'Jumlah Siswa',
-                        data: [100, 120, 300],
+                        data: response.data,
                         borderWidth: 1
                     }]
                 },

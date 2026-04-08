@@ -13,7 +13,14 @@ class GuruController extends Controller
      */
     public function index()
     {
-
+        $guru = GuruModel::with('guru')->get();
+        return response()->json([
+            'status'  => 'success',
+            'msg'     => 'Data guru ditemukan',
+            'errors'  => null,
+            'data'    => $guru,
+            'content' => null,
+        ], 200);
     }
 
     /**

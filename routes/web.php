@@ -89,6 +89,7 @@ Route::post('check-barcode/{bulan}/{tahun}', [ReportPdf::class, 'reportAbsen'])-
 //  next route
 Route::prefix('piket')->group(function(){
     Route::get('/',[PiketController::class,'index'])->name('piket');
+    Route::get('rekap-piket',[PiketController::class,'rekapPiket'])->name('rekap-piket');
 });
 Route::prefix('guru')->group(function(){
      // use for teacher

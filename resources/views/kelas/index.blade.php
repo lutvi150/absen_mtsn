@@ -48,7 +48,7 @@
                                             </td>
                                             <td>
                                                 <label for=""
-                                                    class="label label-primary">{{ $item->guru->nama_guru ?? '-' }}</label>
+                                                    class="label label-primary">{{ $item->guru?->nama_guru ?? '-' }}</label>
                                             </td>
                                             <td style="width:40px">
                                                 <button onclick="delete_data({{ $item->id }})"
@@ -78,7 +78,7 @@
                     <h5 class="modal-title modal-add-title">Modal title</h5>
                 </div>
                 <div class="modal-body">
-                    <form enctype="multipart/form-data" id="form-add" action="{{ route('kelas-add') }}" method="POST">
+                    <form enctype="multipart/form-data" id="form-add" action="" method="POST">
                         <div class="mb-3">
                             <label for="nama_kelas" class="form-label">Nama Kelas</label>
                             <input type="text" class="form-control" id="nama_kelas" name="nama_kelas"
@@ -124,7 +124,7 @@
         data_guru = (callback) => {
             $.ajax({
                 type: "GET",
-                url: "{{ route('get-guru') }}",
+                url: "{{ url('api/guru') }}",
                 dataType: "JSON",
                 success: function(response) {
                     if (response.status) {
@@ -133,8 +133,6 @@
                             html += `<option value="${v.id}">${v.nama_guru}</option>`;
                         });
                         $("#id_guru").html(html);
-
-                        // Jalankan callback setelah data guru berhasil dimuat
                         if (typeof callback === "function") {
                             callback();
                         }
@@ -149,7 +147,10 @@
         }
 
         show_modal = () => {
-            sessionStorage.setItem('jenis', 'store');
+            sessionStorage.setItem('TY', 'POST');
+            $("#form-add")[0].reset();
+            $("#form-add").attr('action', `{{ url('api/kelas') }}`);
+            $('.text-error').text('');
             data_guru(() => {
                 $('.modal-add-title').text('Tambah Kelas');
                 $('#modal-add').modal('show');
@@ -157,16 +158,18 @@
         }
 
         edit_data = (id) => {
-            sessionStorage.setItem('id_kelas', id);
-            sessionStorage.setItem('jenis', 'update');
+            sessionStorage.setItem('TY','PUT');
+            $("#form-add")[0].reset();
+            $("#form-add").attr('action', `${BASE_URL}/api/kelas/${id}`,);
             data_guru(() => {
                 $.ajax({
                     type: "GET",
-                    url: `{{ url('admin/kelas/${id}/edit') }}`,
+                    url: `${BASE_URL}/api/kelas/${id}`,
                     dataType: "JSON",
                     success: function(response) {
                         $('#nama_kelas').val(response.data.nama_kelas);
                         $('#id_guru').val(response.data.id_guru);
+                        sessionStorage.setItem('id_guru', response.data.id_guru);
                         $('.modal-add-title').text('Edit Kelas');
                         $('#modal-add').modal('show');
                     },
@@ -181,7 +184,7 @@
             $(".text-error").text('');
             let formData =
                 $.ajax({
-                    type: "POST",
+                    type: sessionStorage.getItem("TY"),
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -189,7 +192,6 @@
                     data: {
                         nama_kelas: $("#nama_kelas").val(),
                         id: sessionStorage.getItem('id_kelas'),
-                        jenis: sessionStorage.getItem('jenis'),
                         id_guru: $("#id_guru").val(),
                     },
                     dataType: "JSON",
@@ -203,7 +205,6 @@
                             $('#modal-add').modal('hide');
                             location.reload();
                         } else {
-                            console.log('disini');
 
                             // Handle validation errors
                             $.each(response.errors, function(key, value) {
