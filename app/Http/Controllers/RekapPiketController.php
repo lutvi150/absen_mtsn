@@ -13,7 +13,8 @@ class RekapPiketController extends Controller
      */
     public function index()
     {
-        //
+        $title='Rekap Piket';
+        return view('rekap-piket.index',compact('title'));
     }
 
     /**

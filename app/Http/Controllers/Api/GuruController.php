@@ -13,7 +13,7 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $guru = GuruModel::with('guru')->get();
+        $guru = GuruModel::with('user')->get();
         return response()->json([
             'status'  => 'success',
             'msg'     => 'Data guru ditemukan',
@@ -130,21 +130,23 @@ class GuruController extends Controller
     public function destroy(string $id)
     {
         $guru = GuruModel::find($id);
-        if ($guru->foto && file_exists(public_path('uploads/guru/' . $guru->foto))) {
-            unlink(public_path('uploads/guru/' . $guru->foto));
-        }
-        if ($guru) {
-            $guru->delete();
-            $guru->guru()->delete();
-            return response()->json([
-                'status'  => true,
-                'message' => 'Data guru berhasil dihapus.',
-            ], 200);
-        } else {
+        if (! $guru) {
             return response()->json([
                 'status'  => false,
                 'message' => 'Data guru tidak ditemukan.',
             ], 404);
         }
+        if ($guru->foto && file_exists(public_path('uploads/guru/' . $guru->foto))) {
+            unlink(public_path('uploads/guru/' . $guru->foto));
+        }
+        $user = $guru->user;
+        $guru->delete();
+        if ($user) {
+            $user->delete();
+        }
+        return response()->json([
+            'status'  => true,
+            'message' => 'Data guru berhasil dihapus.',
+        ], 200);
     }
 }

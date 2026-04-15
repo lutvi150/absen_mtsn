@@ -43,7 +43,7 @@
                                     @foreach ($guru as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ strtoupper($item['nama_guru']) }}</td>
+                                            <td>{{ strtoupper($item['nama_guru']) }} <br> <label for="" class="label label-primary"> {{ $item->user->email }}</label></td>
                                             <td>{{ $item->nip }}</td>
                                             <td><label for="" class="label {{ $item->jenis_kelamin=="L" ? 'label-primary' : 'label-danger' }}">{{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</label></td>
                                             <td>{{ $item->alamat }}</td>

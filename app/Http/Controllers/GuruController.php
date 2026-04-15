@@ -20,7 +20,7 @@ class GuruController extends Controller
     public function index()
     {
         $title = "Guru";
-        $guru  = GuruModel::with('guru')->get();
+        $guru  = GuruModel::with('user')->get();
         return view('guru.index', compact("guru", "title"));
     }
 

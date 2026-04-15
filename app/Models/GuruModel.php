@@ -11,12 +11,14 @@ class GuruModel extends Model
         'nama_guru',
         'nip',
         'jenis_kelamin',
+        'golongan',
+        'jabatan',
         'foto',
         'alamat',
         'no_hp',
     ];
     public $timestamps = true;
-    public function guru()
+    public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
     }

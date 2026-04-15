@@ -36,6 +36,7 @@
                 <li><a href="{{ route('mapel') }}"><i class="fa fa-book"></i> DATA MAPEL</a></li>
                 <li><a href="{{route('jadwal-piket')}}"><i class="fa fa-calendar"></i> JADWAL PIKET</a></li>
                 <li><a href="{{ route('kelas') }}"><i class="fa fa-home"></i> KELAS</a></li>
+                {{-- <li><a href="{{ route('mapel-detail') }}"><i class="fa fa-home"></i> KELAS</a></li> --}}
               </ul>
             </li>
             <li><a href="{{ route('rekap-piket') }}"><i class="fa fa-calendar"></i> <span>PIKET</span></a></li>

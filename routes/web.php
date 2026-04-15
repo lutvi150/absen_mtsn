@@ -9,6 +9,7 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\PiketController;
+use App\Http\Controllers\RekapPiketController;
 use App\Http\Controllers\ReportPdf;
 use App\Http\Controllers\SiswaController;
 use App\Http\Middleware\CheckRole;
@@ -89,7 +90,7 @@ Route::post('check-barcode/{bulan}/{tahun}', [ReportPdf::class, 'reportAbsen'])-
 //  next route
 Route::prefix('piket')->group(function(){
     Route::get('/',[PiketController::class,'index'])->name('piket');
-    Route::get('rekap-piket',[PiketController::class,'rekapPiket'])->name('rekap-piket');
+    Route::get('rekap-piket',[RekapPiketController::class,'index'])->name('rekap-piket');
 });
 Route::prefix('guru')->group(function(){
      // use for teacher
@@ -112,6 +113,7 @@ Route::prefix('mapel')->group(function(){
     Route::post('mapel-add', [MapelController::class, 'store'])->name('mapel-add');
     Route::get('mapel-edit/{id}', [MapelController::class, 'edit'])->name('mapel-edit');
     Route::delete('mapel/{mapelModel}', [MapelController::class, 'destroy'])->name('mapel.destroy');
+    Route::view('mapel-detail','mapel.jadwal_pelajaran')->name('mapel-detail');
 });
 Route::prefix('jadwal-piket')->group(function(){
     Route::get('/',[PiketController::class,'index'])->name('jadwal-piket');
