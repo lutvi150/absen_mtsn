@@ -118,6 +118,7 @@ Route::prefix('mapel')->group(function(){
 Route::prefix('jadwal-piket')->group(function(){
     Route::get('/',[PiketController::class,'index'])->name('jadwal-piket');
     Route::get('/{bulan}/{tahun}',[PiketController::class,'piketDetail'])->name('piket.show');
+    Route::get('add-jadwal-tahunan',[PiketController::class,'addJadwalTahunan'])->name('piket.add-jadwal-tahunan');
 });
 Route::prefix('kelas')->group(function(){
     Route::get('/',[KelasController::class,'index'])->name('kelas');

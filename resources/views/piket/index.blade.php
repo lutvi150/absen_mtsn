@@ -4,8 +4,8 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Data {{ $title }}
-                <small>Data {{ $title }}</small>
+                 {{ $title }}
+                <small> {{ $title }}</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -25,6 +25,7 @@
                         <div class="box-body">
                             <button class="btn btn-success btn-sm" onclick="add_piket()"><i class="fa fa-plus"></i> Tambah
                                 Piket</button>
+                                <a href="{{ route('piket.add-jadwal-tahunan') }}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Tambah Piket Tahunan</a>
                             <div id="calendar"></div>
 
                         </div><!-- /.box-body -->

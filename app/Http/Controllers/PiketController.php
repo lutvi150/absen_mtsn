@@ -109,4 +109,9 @@ class PiketController extends Controller
 
         return view('piket.detail',compact('title','piket'));
     }
+    function addJadwalTahunan()  {
+        $title= "Tambah Jadwal Piket Tahunan";
+        
+        return view('piket.add-jadwal-tahunan',compact('title'));
+    }
 }
