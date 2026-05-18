@@ -37,17 +37,35 @@
                                 <tbody>
                                     @foreach (\App\Helpers\HariHelper::getAllHari() as $nomor => $hari)
                                         <tr>
-                                            <td style="width: 5%">{{ $nomor }}</td>
-
-                                            <td>
-                                                <label class="label label-success">
-                                                    {{ $hari }}
-                                                </label>
+                                            {{-- Nomor --}}
+                                            <td class="text-center align-middle" style="width: 5%">
+                                                {{ $nomor }}
                                             </td>
 
+                                            {{-- Nama Hari --}}
+                                            <td class="align-middle" style="width: 20%">
+                                                <span class="badge badge-success px-3 py-2">
+                                                    {{ $hari }}
+                                                </span>
+                                            </td>
+
+                                            {{-- Data Guru --}}
                                             <td>
-                                                <ul id="hari-{{ $nomor }}">
-                                                </ul>
+                                                <table class="table table-sm table-borderless mb-0">
+                                                    <tbody id="hari-{{ strtolower($hari) }}">
+                                                        <tr>
+                                                            <td class="align-middle">
+                                                                Budi
+                                                            </td>
+
+                                                            <td class="text-end" style="width: 1%">
+                                                                <button type="button" class="btn btn-danger btn-sm">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -76,14 +94,14 @@
                                     <option value="{{ $nomor }}">{{ $hari }}</option>
                                 @endforeach
                             </select>
-                            <span class="e-hari_piket text-error"></span>
+                            <span class="e-hari text-error"></span>
                         </div>
                         <div class="mb-3">
                             <label for="id_guru" class="form-label">Nama Guru</label>
                             <select name="id_guru" class="form-control" id="id_guru">
 
                             </select>
-                            <span class="e-nama_guru text-error"></span>
+                            <span class="e-id_guru text-error"></span>
                         </div>
 
                         <div class="modal-footer">
@@ -145,7 +163,7 @@
         showModalAdd = () => {
             sessionStorage.setItem('TY', 'POST');
             $("#form-add")[0].reset();
-            $("#form-add").attr('action', `{{ url('api/jadwal-tahunan') }}`);
+            $("#form-add").attr('action', `{{ url('api/piket-tahunan') }}`);
             $('.text-error').text('');
             data_guru(() => {
                 $('.modal-add-title').text('Tambah ');
@@ -178,65 +196,78 @@
         }
         store_data = () => {
             $(".text-error").text('');
-            let hari = $("#hari_piket").val();
-            let id_guru = $("#id_guru").val();
-            if (hari == '' || id_guru == '') {
-                if (hari == '') {
-                    $(".e-hari_piket").text('Hari Piket harus diisi');
-                }
-                if (id_guru == '') {
-                    $(".e-nama_guru").text('Nama Guru harus diisi');
-                }
-                Notiflix.Report.failure(
-                    `Kesalahan`,
-                    `Data Gagal Disimpan, pastikan semua field terisi dengan benar`,
-                    `Okay`,
-                );
-                return;
-            }
-            let dataPiket = JSON.parse(localStorage.getItem('data_piket')) || [];
-            let duplicate = dataPiket.find(item =>
-                item.hari == hari && item.id_guru == id_guru
-            );
-            if (duplicate) {
+            let formData =
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: $("#form-add").attr('action'),
+                    data: {
+                        hari: $("#hari_piket").children("option:selected").val(),
+                        id_guru: $("#id_guru").children("option:selected").val(),
+                    },
+                    dataType: "JSON",
+                    success: function(response) {
+                        if (response.status == true) {
+                            Notiflix.Report.success(
+                                `Berhasil`,
+                                `Data Piket Tahunan Berhasil Disimpan`,
+                                `Okay`,
+                            );
+                            $('#modal-add').modal('hide');
+                            // location.reload();
+                        } else {
 
-                Notiflix.Report.failure(
-                    `Duplikat`,
-                    `Guru pada hari tersebut sudah ditambahkan`,
-                    `Okay`,
-                );
-
-                return;
-            }
-            let dataBaru = {
-                hari: hari,
-                id_guru: id_guru
-            };
-            dataPiket.push(dataBaru);
-            localStorage.setItem('data_piket', JSON.stringify(dataPiket));
-            Notiflix.Report.success(
-                `Berhasil`,
-                `Data berhasil disimpan`,
-                `Okay`,
-            );
-            console.log(dataPiket);
+                            $.each(response.errors, function(key, value) {
+                                $(`.e-${key}`).text(value[0]);
+                            });
+                            Notiflix.Report.failure(
+                                `Kesalahan`,
+                                `Data Piket Tahunan Gagal Disimpan`,
+                                `Okay`,
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        handleAjaxError(xhr);
+                    }
+                });
         }
         showDataPiket = () => {
-            let dataPiket = JSON.parse(localStorage.getItem('data_piket')) || [];
-            $("ul[id^='hari-']").html('');
+            $.ajax({
+                type: "GET",
+                url: "{{ url('api/piket-tahunan') }}",
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status) {
+                        $.each(response.data, function(i, v) {
+                            let html = `
+                    <tr>
+                        <td class="align-middle">
+                            ${v.guru.nama_guru}
+                        </td>
+                        <td class="text-end" style="width:1%">
+                            <button type="button"
+                                class="btn btn-danger btn-sm btn-hapus"
+                                data-id="${v.id}">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                            $(`#hari-${v.hari.toLowerCase()}`).append(html);
 
-            dataPiket.forEach(item => {
-                let hariId = item.hari;
-                let guruId = item.id_guru;
-                console.log(guruId);
-                
-                let namaGuru = $("#id_guru option[value='" + guruId + "']").text();
-                $("#hari-" + hariId).append(`
-            <li>${namaGuru}</li>
-        `);
+                        });
 
+                    } else {
+                        alert('Gagal mengambil data piket tahunan.');
+                    }
+                },
+                error: function(xhr) {
+                    error_function(xhr);
+                }
             });
-
         }
         delete_data = (id) => {
             Notiflix.Confirm.show(

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\KelasController;
 use App\Http\Controllers\Api\PiketController;
 use App\Http\Controllers\Api\SiswaController;
+use App\Http\Controllers\Api\PiketTahunanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,4 +46,11 @@ Route::prefix('piket')->group(function () {
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [GuruController::class, 'dashboard']);
     Route::get('chart-siswa', [Dashboard::class, 'chartSiswa']);
+});
+Route::prefix('piket-tahunan')->group(function () {
+    Route::get('/',[PiketTahunanController::class,'index']);
+    Route::post('/', [PiketTahunanController::class, 'store'])->name('api-piket-add');
+    Route::get('/{id}', [PiketTahunanController::class, 'show']);
+    Route::put('/{id}', [PiketTahunanController::class, 'update']);
+    Route::delete('/{id}', [PiketTahunanController::class, 'destroy']);
 });

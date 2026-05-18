@@ -14,5 +14,8 @@ class PiketTahunan extends Model
         'hari',
         'id_guru',
     ];
-    
+    public $timestamps = true;
+    public function guru() {
+        return $this->belongsTo(GuruModel::class, 'id_guru');
+    }
 }
