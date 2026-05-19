@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               8.0.30 - MySQL Community Server - GPL
+-- Server version:               5.7.24 - MySQL Community Server (GPL)
 -- Server OS:                    Win64
--- HeidiSQL Version:             12.14.0.7165
+-- HeidiSQL Version:             12.11.0.7065
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,51 +14,49 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Dumping structure for table absen.absensi
+-- Dumping structure for table piket.absensi
 CREATE TABLE IF NOT EXISTS `absensi` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tanggal` date NOT NULL,
   `jam_masuk` time NOT NULL,
   `jam_keluar` time NOT NULL,
-  `mata_pelajaran` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_kelas` int NOT NULL,
-  `jumlah_siswa` int NOT NULL,
-  `id_guru` int NOT NULL,
+  `mata_pelajaran` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_kelas` int(11) NOT NULL,
+  `jumlah_siswa` int(11) NOT NULL,
+  `id_guru` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.absensi: ~0 rows (approximately)
-DELETE FROM `absensi`;
+-- Dumping data for table piket.absensi: ~0 rows (approximately)
 
--- Dumping structure for table absen.check_absensi
+-- Dumping structure for table piket.check_absensi
 CREATE TABLE IF NOT EXISTS `check_absensi` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `id_absensi` int NOT NULL,
-  `id_siswa` int NOT NULL,
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id_absensi` int(11) NOT NULL,
+  `id_siswa` int(11) NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keterangan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.check_absensi: ~0 rows (approximately)
-DELETE FROM `check_absensi`;
+-- Dumping data for table piket.check_absensi: ~0 rows (approximately)
 
--- Dumping structure for table absen.guru
+-- Dumping structure for table piket.guru
 CREATE TABLE IF NOT EXISTS `guru` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `id_user` int NOT NULL,
-  `nama_guru` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_kelamin` enum('L','P') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
-  `foto` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `nama_guru` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
+  `foto` text COLLATE utf8mb4_unicode_ci,
   `golongan` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jabatan` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `alamat` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `no_hp` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jabatan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_hp` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -66,9 +64,8 @@ CREATE TABLE IF NOT EXISTS `guru` (
   UNIQUE KEY `guru_nip_unique` (`nip`)
 ) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.guru: ~81 rows (approximately)
-DELETE FROM `guru`;
-INSERT INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`, `golongan`, `jabatan`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table piket.guru: ~81 rows (approximately)
+REPLACE INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`, `golongan`, `jabatan`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
 	(87, 89, 'NOPRIZAL, M. Pd', '197711092006041006', 'P', NULL, 'III.d', 'KEPALA MADRASAH', '-', '-', '2026-04-15 02:21:37', '2026-04-15 02:21:37'),
 	(88, 90, 'FITRA DONI GEMINTARYA, S.A.P', '197506142005011006', 'P', NULL, 'III.a', 'KAUR TU MADRASAH', '-', '-', '2026-04-15 02:21:37', '2026-04-15 02:21:37'),
 	(89, 91, 'RIZA PUSPITA SARI, S. Pd', '197607142006042019', 'P', NULL, 'IV.b', 'WAKA. KURIKULUM', '-', '-', '2026-04-15 02:21:38', '2026-04-15 02:21:38'),
@@ -151,11 +148,11 @@ INSERT INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`
 	(166, 168, 'RICE MAI YUNI, S.Pd', '199505302025212018', 'P', NULL, 'IX', 'GURU', '-', '-', '2026-04-15 02:21:56', '2026-04-15 02:21:56'),
 	(167, 169, 'GUSNELI, S,Pd', '197202102025212005', 'P', NULL, 'IX', 'GURU', '-', '-', '2026-04-15 02:21:56', '2026-04-15 02:21:56');
 
--- Dumping structure for table absen.jadwal_piket
+-- Dumping structure for table piket.jadwal_piket
 CREATE TABLE IF NOT EXISTS `jadwal_piket` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `tanggal` date NOT NULL,
-  `id_guru` bigint unsigned NOT NULL,
+  `id_guru` bigint(20) unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -163,25 +160,23 @@ CREATE TABLE IF NOT EXISTS `jadwal_piket` (
   CONSTRAINT `jadwal_piket_id_guru_foreign` FOREIGN KEY (`id_guru`) REFERENCES `guru` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.jadwal_piket: ~0 rows (approximately)
-DELETE FROM `jadwal_piket`;
+-- Dumping data for table piket.jadwal_piket: ~0 rows (approximately)
 
--- Dumping structure for table absen.kelas
+-- Dumping structure for table piket.kelas
 CREATE TABLE IF NOT EXISTS `kelas` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama_kelas` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_guru` bigint unsigned DEFAULT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nama_kelas` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_guru` bigint(20) unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `kelas_nama_kelas_unique` (`nama_kelas`),
   KEY `kelas_id_guru_foreign` (`id_guru`),
   CONSTRAINT `kelas_id_guru_foreign` FOREIGN KEY (`id_guru`) REFERENCES `guru` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.kelas: ~33 rows (approximately)
-DELETE FROM `kelas`;
-INSERT INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table piket.kelas: ~33 rows (approximately)
+REPLACE INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
 	(1, 'VII.1', NULL, '2026-03-25 01:43:31', '2026-04-15 03:08:43'),
 	(2, 'VII.2', NULL, '2026-03-25 01:44:38', '2026-04-15 03:08:52'),
 	(4, 'VII.3', NULL, '2026-04-08 07:59:24', '2026-04-15 03:09:03'),
@@ -216,87 +211,140 @@ INSERT INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) 
 	(35, 'IX.10', NULL, '2026-04-15 03:13:04', '2026-04-15 03:13:04'),
 	(36, 'IX.11', NULL, '2026-04-15 03:13:04', '2026-04-15 03:13:04');
 
--- Dumping structure for table absen.mapel
+-- Dumping structure for table piket.mapel
 CREATE TABLE IF NOT EXISTS `mapel` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama_mapel` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nama_mapel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.mapel: ~2 rows (approximately)
-DELETE FROM `mapel`;
-INSERT INTO `mapel` (`id`, `nama_mapel`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table piket.mapel: ~2 rows (approximately)
+REPLACE INTO `mapel` (`id`, `nama_mapel`, `created_at`, `updated_at`) VALUES
 	(1, 'IPA', '2026-03-25 08:08:51', '2026-03-25 08:08:51'),
 	(3, 'IPS', '2026-03-25 08:16:15', '2026-03-25 08:16:15');
 
--- Dumping structure for table absen.migrations
+-- Dumping structure for table piket.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL,
+  `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.migrations: ~2 rows (approximately)
-DELETE FROM `migrations`;
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+-- Dumping data for table piket.migrations: ~3 rows (approximately)
+REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(2, '2026_03_25_075804_create_pikets_table', 1),
-	(3, '2026_04_08_123814_jadwal_piket', 2);
+	(3, '2026_04_08_123814_jadwal_piket', 2),
+	(4, '2026_05_17_203305_create_piket_tahunans_table', 3);
 
--- Dumping structure for table absen.piket
+-- Dumping structure for table piket.piket
 CREATE TABLE IF NOT EXISTS `piket` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tanggal` int NOT NULL,
-  `bulan` int NOT NULL,
-  `tahun` int NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tanggal` int(11) NOT NULL,
+  `bulan` int(11) NOT NULL,
+  `tahun` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.piket: ~0 rows (approximately)
-DELETE FROM `piket`;
+-- Dumping data for table piket.piket: ~0 rows (approximately)
 
--- Dumping structure for table absen.siswa
+-- Dumping structure for table piket.piket_tahunan
+CREATE TABLE IF NOT EXISTS `piket_tahunan` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `hari` int(11) NOT NULL,
+  `id_guru` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table piket.piket_tahunan: ~44 rows (approximately)
+REPLACE INTO `piket_tahunan` (`id`, `hari`, `id_guru`, `created_at`, `updated_at`) VALUES
+	(1, 1, 87, '2026-05-18 09:22:46', '2026-05-18 09:22:46'),
+	(3, 1, 88, '2026-05-18 09:37:01', '2026-05-18 09:37:01'),
+	(4, 1, 89, '2026-05-18 15:18:13', '2026-05-18 15:18:13'),
+	(5, 1, 90, '2026-05-18 15:18:23', '2026-05-18 15:18:23'),
+	(6, 1, 91, '2026-05-18 15:18:34', '2026-05-18 15:18:34'),
+	(7, 1, 92, '2026-05-18 15:20:14', '2026-05-18 15:20:14'),
+	(8, 1, 94, '2026-05-18 15:20:24', '2026-05-18 15:20:24'),
+	(9, 2, 89, '2026-05-18 15:20:32', '2026-05-18 15:20:32'),
+	(10, 3, 88, '2026-05-18 15:23:39', '2026-05-18 15:23:39'),
+	(11, 4, 87, '2026-05-18 15:27:09', '2026-05-18 15:27:09'),
+	(12, 2, 165, '2026-05-18 15:30:57', '2026-05-18 15:30:57'),
+	(13, 1, 101, '2026-05-18 15:31:07', '2026-05-18 15:31:07'),
+	(14, 2, 99, '2026-05-18 15:31:28', '2026-05-18 15:31:28'),
+	(15, 2, 100, '2026-05-18 15:31:38', '2026-05-18 15:31:38'),
+	(16, 2, 120, '2026-05-18 15:31:50', '2026-05-18 15:31:50'),
+	(17, 2, 101, '2026-05-18 15:32:09', '2026-05-18 15:32:09'),
+	(18, 3, 103, '2026-05-18 15:32:21', '2026-05-18 15:32:21'),
+	(19, 2, 105, '2026-05-18 15:32:36', '2026-05-18 15:32:36'),
+	(20, 3, 124, '2026-05-18 15:37:22', '2026-05-18 15:37:22'),
+	(21, 3, 155, '2026-05-18 15:37:33', '2026-05-18 15:37:33'),
+	(22, 3, 162, '2026-05-18 15:37:42', '2026-05-18 15:37:42'),
+	(23, 3, 164, '2026-05-18 15:37:52', '2026-05-18 15:37:52'),
+	(24, 3, 165, '2026-05-18 15:38:11', '2026-05-18 15:38:11'),
+	(25, 4, 159, '2026-05-18 15:38:20', '2026-05-18 15:38:20'),
+	(26, 4, 91, '2026-05-18 15:38:28', '2026-05-18 15:38:28'),
+	(27, 2, 127, '2026-05-18 15:38:41', '2026-05-18 15:38:41'),
+	(28, 4, 160, '2026-05-18 15:38:50', '2026-05-18 15:38:50'),
+	(29, 4, 95, '2026-05-18 15:39:01', '2026-05-18 15:39:01'),
+	(30, 4, 102, '2026-05-18 15:39:09', '2026-05-18 15:39:09'),
+	(31, 4, 101, '2026-05-18 15:39:17', '2026-05-18 15:39:17'),
+	(32, 5, 87, '2026-05-18 15:39:43', '2026-05-18 15:39:43'),
+	(33, 5, 163, '2026-05-18 15:39:54', '2026-05-18 15:39:54'),
+	(34, 5, 126, '2026-05-18 15:40:06', '2026-05-18 15:40:06'),
+	(35, 5, 158, '2026-05-18 15:40:14', '2026-05-18 15:40:14'),
+	(36, 5, 131, '2026-05-18 15:40:25', '2026-05-18 15:40:25'),
+	(37, 5, 94, '2026-05-18 15:40:34', '2026-05-18 15:40:34'),
+	(38, 5, 104, '2026-05-18 15:40:42', '2026-05-18 15:40:42'),
+	(39, 6, 89, '2026-05-18 15:40:50', '2026-05-18 15:40:50'),
+	(40, 6, 162, '2026-05-18 15:40:58', '2026-05-18 15:40:58'),
+	(41, 6, 132, '2026-05-18 15:41:16', '2026-05-18 15:41:16'),
+	(42, 6, 134, '2026-05-18 15:41:23', '2026-05-18 15:41:23'),
+	(43, 6, 163, '2026-05-18 15:41:40', '2026-05-18 15:41:40'),
+	(44, 6, 166, '2026-05-18 15:41:50', '2026-05-18 15:41:50'),
+	(45, 6, 135, '2026-05-18 15:42:07', '2026-05-18 15:42:07');
+
+-- Dumping structure for table piket.siswa
 CREATE TABLE IF NOT EXISTS `siswa` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `nama_siswa` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nisn` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_kelamin` enum('L','P') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
-  `id_kelas` int NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nama_siswa` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nisn` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_kelamin` enum('L','P') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'L',
+  `id_kelas` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `siswa_nisn_unique` (`nisn`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.siswa: ~3 rows (approximately)
-DELETE FROM `siswa`;
-INSERT INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `id_kelas`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table piket.siswa: ~3 rows (approximately)
+REPLACE INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `id_kelas`, `created_at`, `updated_at`) VALUES
 	(1, 'Ahmad Rizky Pratama', '0045123456', 'L', 1, '2026-03-25 04:44:44', '2026-03-25 04:44:44'),
 	(2, 'Dimas Saputra', '0045123457', 'L', 1, '2026-03-25 04:52:00', '2026-03-25 04:52:00'),
 	(3, 'Fajar Nugroho', '0045123458', 'L', 1, '2026-03-25 04:52:57', '2026-03-25 04:52:57');
 
--- Dumping structure for table absen.users
+-- Dumping structure for table piket.users
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table absen.users: ~85 rows (approximately)
-DELETE FROM `users`;
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table piket.users: ~85 rows (approximately)
+REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$12$2MVLtdWaWVusG1KKOxuUdOG5peACsErLFisoLPus9AIXGG6Ga/1Di', 'admin', NULL, '2026-01-28 16:09:47', '2026-01-28 16:09:47'),
 	(2, 'Guru', 'guru@gmail.com', NULL, '$2y$12$tfVQRVeJKEXuIzO7RlkLxObF5jLjFMvgHaqGIGLlwkkw3noRCryJq', 'guru', NULL, '2026-01-28 16:09:47', '2026-01-28 16:09:47'),
 	(3, 'SRI RENGGAYONI', 'renggaunnie1210@gmail.com', NULL, '$2y$12$mg44Z0KDzr4PGk2lAaLzUefuqcp2glAsxUGWFZNV5RNjGb1oalOfC', 'guru', NULL, '2026-04-06 07:50:55', '2026-04-06 07:50:55'),

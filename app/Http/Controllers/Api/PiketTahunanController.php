@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\GuruModel;
+use App\Models\PiketTahunan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\PiketTahunan;
 
 class PiketTahunanController extends Controller
 {
@@ -15,10 +15,10 @@ class PiketTahunanController extends Controller
     public function index()
     {
         $piketTahunan = PiketTahunan::with('guru')->get();
-        $data=[
-            'status' => true,
+        $data         = [
+            'status'  => true,
             'message' => 'Data piket tahunan berhasil diambil.',
-            'data' => $piketTahunan,
+            'data'    => $piketTahunan,
         ];
         return response()->json($data, 200);
     }
@@ -37,12 +37,12 @@ class PiketTahunanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'hari' => 'required|integer',
+            'hari'    => 'required|integer',
             'id_guru' => 'required|integer',
         ];
         $messages = [
-            'hari.required' => 'Hari harus diisi.',
-            'hari.integer'  => 'Hari harus berupa angka.',
+            'hari.required'    => 'Hari harus diisi.',
+            'hari.integer'     => 'Hari harus berupa angka.',
             'id_guru.required' => 'ID guru harus diisi.',
             'id_guru.integer'  => 'ID guru harus berupa angka.',
         ];
@@ -54,14 +54,23 @@ class PiketTahunanController extends Controller
                 'errors'  => $validator->errors(),
             ], 422);
         }
-        PiketTahunan::create([
-            'hari' => $request->hari,
-            'id_guru'    => $request->id_guru,
-        ]);
-        return response()->json([
-            'status'  => true,
-            'message' => 'Data berhasil disimpan.',
-        ], 201);
+        $check = PiketTahunan::where('hari', $request->hari)->where('id_guru', $request->id_guru)->first();
+        if ($check) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data piket tahunan untuk hari dan guru tersebut sudah ada.',
+                'data'    => $check,
+            ], 201);
+        } else {
+            PiketTahunan::create([
+                'hari'    => $request->hari,
+                'id_guru' => $request->id_guru,
+            ]);
+            return response()->json([
+                'status'  => true,
+                'message' => 'Data berhasil disimpan.',
+            ], 201);
+        }
     }
 
     /**
@@ -85,13 +94,13 @@ class PiketTahunanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         $rules = [
-            'hari' => 'required|integer',
+        $rules = [
+            'hari'    => 'required|integer',
             'id_guru' => 'required|integer',
         ];
         $messages = [
-            'hari.required' => 'Hari harus diisi.',
-            'hari.integer'  => 'Hari harus berupa angka.',
+            'hari.required'    => 'Hari harus diisi.',
+            'hari.integer'     => 'Hari harus berupa angka.',
             'id_guru.required' => 'ID guru harus diisi.',
             'id_guru.integer'  => 'ID guru harus berupa angka.',
         ];
@@ -106,8 +115,8 @@ class PiketTahunanController extends Controller
             $jadwal = PiketTahunan::find($id);
             if ($jadwal) {
                 $jadwal->update([
-                    'hari' => $request->hari,
-                    'id_guru'    => $request->id_guru,
+                    'hari'    => $request->hari,
+                    'id_guru' => $request->id_guru,
                 ]);
                 return response()->json([
                     'status'  => true,
@@ -142,5 +151,22 @@ class PiketTahunanController extends Controller
                 'message' => 'Data piket tahunan tidak ditemukan.',
             ], 404);
         }
+    }
+    public function generatePiketTahunan(Request $request)
+    {
+        $hari = [1, 2, 3, 4, 5];
+        $guru = GuruModel::pluck('id')->toArray();
+        foreach ($hari as $h) {
+            foreach ($guru as $g) {
+                PiketTahunan::firstOrCreate([
+                    'hari'    => $h,
+                    'id_guru' => $g,
+                ]);
+            }
+        }
+        return response()->json([
+            'status'  => true,
+            'message' => 'Data piket tahunan berhasil digenerate.',
+        ], 201);
     }
 }

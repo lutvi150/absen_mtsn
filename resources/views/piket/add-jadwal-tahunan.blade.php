@@ -1,5 +1,13 @@
 @extends('layout.template')
 @section('content')
+    <style>
+        .table-super-sm td,
+        .table-super-sm th {
+            padding: 2px 6px !important;
+            vertical-align: middle;
+            font-size: 12px;
+        }
+    </style>
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
@@ -24,7 +32,7 @@
                         <div class="box-body">
                             <button class="btn btn-success btn-sm" onclick="showModalAdd()"><i class="fa fa-plus"></i>
                                 Tambah</button>
-                            <button class="btn btn-success btn-sm"><i class="fa fa-refresh"></i> Generate Piket
+                            <button class="btn btn-success btn-sm" onclick="showModalGenerate()"><i class="fa fa-refresh"></i> Generate Piket
                                 Tahunan</button>
                             <table id="" class="table ">
                                 <thead>
@@ -51,19 +59,9 @@
 
                                             {{-- Data Guru --}}
                                             <td>
-                                                <table class="table table-sm table-borderless mb-0">
-                                                    <tbody id="hari-{{ strtolower($hari) }}">
-                                                        <tr>
-                                                            <td class="align-middle">
-                                                                Budi
-                                                            </td>
+                                                <table class="table table-super-sm small table-borderless mb-0">
+                                                    <tbody class="reset-table" id="hari-{{ $nomor }}">
 
-                                                            <td class="text-end" style="width: 1%">
-                                                                <button type="button" class="btn btn-danger btn-sm">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </td>
@@ -109,6 +107,37 @@
                             <button type="button" onclick="store_data()" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modal-generate" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generate Piket Tahunan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('api-piket-generate') }}" method="post">
+                        <div class="form-group">
+                          <label for="">Pilih Tahun</label>
+                          <select name="tahun" class="form-control" id="tahun">
+                            <option value="">-- Pilih Tahun --</option>
+                            @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
+                                <option value="{{ $i }}">{{ $i }}</option>
+                            @endfor
+                          </select>
+                          <small id="helpId" class="e-tahun text-error"></small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" onclick="generatePiket()">Generate</button>
                 </div>
             </div>
         </div>
@@ -216,17 +245,20 @@
                                 `Okay`,
                             );
                             $('#modal-add').modal('hide');
+                            showDataPiket();
                             // location.reload();
                         } else {
-
-                            $.each(response.errors, function(key, value) {
-                                $(`.e-${key}`).text(value[0]);
-                            });
                             Notiflix.Report.failure(
                                 `Kesalahan`,
-                                `Data Piket Tahunan Gagal Disimpan`,
+                                response.message || `Data Piket Tahunan Gagal Disimpan`,
                                 `Okay`,
                             );
+                            if (response.errors) {
+                                $.each(response.errors, function(key, value) {
+                                    $(`.e-${key}`).text(value[0]);
+                                });
+                            }
+
                         }
                     },
                     error: function(xhr) {
@@ -235,37 +267,75 @@
                 });
         }
         showDataPiket = () => {
+            $(".reset-table").html('');
             $.ajax({
                 type: "GET",
                 url: "{{ url('api/piket-tahunan') }}",
                 dataType: "JSON",
                 success: function(response) {
                     if (response.status) {
+                        let nomorHari = {};
                         $.each(response.data, function(i, v) {
+                            if (!nomorHari[v.hari]) {
+                                nomorHari[v.hari] = 1;
+                            }
+                            let nomor = nomorHari[v.hari];
                             let html = `
-                    <tr>
+                    <tr id="data-${v.id}">
+                        <td class="align-middle">
+                            ${nomor}.
+                        </td>
                         <td class="align-middle">
                             ${v.guru.nama_guru}
                         </td>
                         <td class="text-end" style="width:1%">
                             <button type="button"
-                                class="btn btn-danger btn-sm btn-hapus"
-                                data-id="${v.id}">
-                                <i class="fa fa-minus"></i>
+                                class="btn btn-danger btn-xs btn-hapus"
+                                data-id="${v.id}" onclick="removeDataPiket(${v.id})">
+                                <i class="fa fa-minus small"></i>
                             </button>
                         </td>
                     </tr>
                 `;
-                            $(`#hari-${v.hari.toLowerCase()}`).append(html);
+                            $(`#hari-${v.hari}`).append(html);
+                            nomorHari[v.hari]++;
 
                         });
 
-                    } else {
-                        alert('Gagal mengambil data piket tahunan.');
+
                     }
                 },
                 error: function(xhr) {
-                    error_function(xhr);
+                    handleAjaxError(xhr);
+                }
+            });
+        }
+        removeDataPiket = (id) => {
+            $.ajax({
+                type: "DELETE",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: `{{ url('api/piket-tahunan/${id}') }}`,
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status == true) {
+                        Notiflix.Report.success(
+                            `Berhasil`,
+                            `Data Piket Tahunan Berhasil Dihapus`,
+                            `Okay`,
+                        );
+                        $(`#data-${id}`).remove();
+                    } else {
+                        Notiflix.Report.failure(
+                            `Gagal`,
+                            `Data Piket Tahunan Gagal Dihapus`,
+                            `Okay`,
+                        );
+                    }
+                },
+                error: function(xhr) {
+                    handleAjaxError(xhr);
                 }
             });
         }
@@ -312,6 +382,9 @@
                     Notiflix.Notify.info('Penghapusan dibatalkan.');
                 }
             );
+        }
+        showModalGenerate = () => {
+            $('#modal-generate').modal('show');
         }
     </script>
 @endsection
