@@ -2,8 +2,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\GuruModel;
 use App\Models\PiketTahunan;
+use App\Models\JadwalPiket;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -154,19 +157,67 @@ class PiketTahunanController extends Controller
     }
     public function generatePiketTahunan(Request $request)
     {
-        $hari = [1, 2, 3, 4, 5];
-        $guru = GuruModel::pluck('id')->toArray();
-        foreach ($hari as $h) {
-            foreach ($guru as $g) {
-                PiketTahunan::firstOrCreate([
-                    'hari'    => $h,
-                    'id_guru' => $g,
-                ]);
+        $tahun        = $request->input('tahun');
+        $piketTahunan = PiketTahunan::all();
+        $libur        = [
+            '2026-01-01',
+            '2026-02-17',
+            '2026-03-19',
+            '2026-03-20',
+            '2026-04-03',
+            '2026-04-06',
+            '2026-05-01',
+            '2026-05-14',
+            '2026-05-26',
+            '2026-06-01',
+            '2026-06-17',
+            '2026-08-17',
+            '2026-09-24',
+            '2026-12-25',
+        ];
+
+        $hasil = [];
+        $start = new DateTime("$tahun-01-01");
+        $end   = new DateTime(($tahun + 1) . "-01-01");
+
+        $interval = new DateInterval('P1D');
+        $periode  = new DatePeriod($start, $interval, $end);
+
+        foreach ($periode as $tanggal) {
+
+            $formatTanggal = $tanggal->format('Y-m-d');
+
+            // 0 = Minggu
+            $hariAngka = (int) $tanggal->format('w');
+
+            // Skip minggu
+            if ($hariAngka == 0) {
+                continue;
+            }
+
+            // Skip hari libur
+            if (in_array($formatTanggal, $libur)) {
+                continue;
+            }
+            $guruPiket = $piketTahunan->where('hari', $hariAngka);
+            // Mapping hari
+            foreach ($guruPiket as $guru) {
+
+                $dataInsert[] = [
+                    'tanggal'    => $formatTanggal,
+                    'id_guru'    => $guru->id_guru,
+                    'keterangan' => 'A',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
         }
+        $deleteCount = JadwalPiket::whereYear('tanggal', $tahun)->delete();
+        JadwalPiket::insert($dataInsert);
         return response()->json([
             'status'  => true,
-            'message' => 'Data piket tahunan berhasil digenerate.',
-        ], 201);
+            'total'   => count($dataInsert),
+            'message' => 'Data piket berhasil digenerate.',
+        ]);
     }
 }

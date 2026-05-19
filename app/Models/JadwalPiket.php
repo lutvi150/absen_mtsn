@@ -10,6 +10,7 @@ class JadwalPiket extends Model
     protected $fillable = [
         'tanggal',
         'id_guru',
+        'keterangan',
     ];
     public $timestamps = true;
     public function guru()

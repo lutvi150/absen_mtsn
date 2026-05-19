@@ -386,5 +386,61 @@
         showModalGenerate = () => {
             $('#modal-generate').modal('show');
         }
+        generatePiket = () => {
+            let tahun = $('#tahun').children("option:selected").val();
+            if (!tahun) {
+                $('.e-tahun').text('Tahun harus dipilih.');
+                return;
+            }
+                Notiflix.Confirm.show(
+                    'Konfirmasi Generate',
+                    `Apakah Anda yakin ingin generate piket tahunan untuk tahun ${tahun}? Data piket tahunan yang sudah ada untuk tahun tersebut akan dihapus dan digantikan dengan data baru.`,
+                    'Ya',
+                    'Tidak',
+                    function() {
+                        processPiketTahunan(tahun);
+                    },
+                    function() {
+                        // User clicked "No"
+                        Notiflix.Notify.info('Generate piket tahunan dibatalkan.');
+                    }
+                );
+           
+        }
+        processPiketTahunan=(tahun)=>{
+            Notiflix.Loading.standard('Sedang memproses...');
+             $.ajax({
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: `{{ route('api-piket-generate') }}`,
+                data: {
+                    tahun: tahun
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    if (response.status == true) {
+                        Notiflix.Report.success(
+                            `Berhasil`,
+                            `Piket Tahunan untuk tahun ${tahun} berhasil digenerate`,
+                            `Okay`,
+                        );
+                        $('#modal-generate').modal('hide');
+                        showDataPiket();
+                    } else {
+                        Notiflix.Report.failure(
+                            `Gagal`,
+                            response.message || `Piket Tahunan untuk tahun ${tahun} gagal digenerate`,
+                            `Okay`,
+                        );
+                    }
+                    Notiflix.Loading.remove();
+                },
+                error: function(xhr) {
+                    handleAjaxError(xhr);
+                }
+            });
+        }
     </script>
 @endsection

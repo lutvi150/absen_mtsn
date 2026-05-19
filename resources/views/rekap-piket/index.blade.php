@@ -29,13 +29,37 @@
                             </div>
                         </div><!-- /.box-header -->
                         <div class="box-body">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <button class="btn-success btn-xs" onclick="modalAddGuru()"><i class="fa fa-plus small"></i>
+                                Tambah Guru</button>
+                            <button class="btn-success btn-xs" onclick="modalAddSiswa()"><i class="fa fa-plus small"></i>
+                                Tambah Siswa</button>
+                            <table id="" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
+                                        <th>Nama Guru</th>
+                                        <th>Mapel</th>
                                         <th>Kelas</th>
-                                        <th>Jumlah Siswa</th>
-                                        <th>Wali Kelas</th>
+                                        <th>Terlambat</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                        <th>Menu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <br>
+                            <table id="" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Status</th>
+                                        <th>Kelas</th>
+                                        <th>Mapel</th>
+                                        <th>Jam</th>
+                                        <th>Keterangan</th>
                                         <th>Menu</th>
                                     </tr>
                                 </thead>
@@ -49,33 +73,54 @@
         </section><!-- /.content -->
     </div>
 
-    <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal fade" id="modalAddGuru" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title modal-add-title">Modal title</h5>
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <form enctype="multipart/form-data" id="form-add" action="" method="POST">
-                        <div class="mb-3">
-                            <label for="nama_kelas" class="form-label">Nama Kelas</label>
-                            <input type="text" class="form-control" id="nama_kelas" name="nama_kelas"
-                                placeholder="Masukkan Nama Kelas">
-                            <span class="e-nama_kelas text-error"></span>
+                    <form action="" id="form-guru" method="post">
+                        <div class="form-group">
+                          <label for="">Nama Guru</label>
+                          <input type="text" name="nama_guru" id="nama_guru" class="form-control" placeholder="Nama Guru" aria-describedby="helpId">
+                          <small id="helpId" class="text-muted">Help text</small>
                         </div>
-                        <div class="mb-3">
-                            <label for="id_guru" class="form-label">Nama Guru</label>
-                            <select name="id_guru" class="form-control" id="id_guru">
-
-                            </select>
-                            <span class="e-nama_guru text-error"></span>
+                        <div class="form-group">
+                          <label for="">Kelas</label>
+                          <input type="text" name="kelas" id="kelas" class="form-control" placeholder="Kelas" aria-describedby="helpId">
+                          <small id="helpId" class="text-muted">Help text</small>
                         </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                            <button type="button" onclick="store_data()" class="btn btn-primary">Simpan</button>
+                        <div class="form-group">
+                          <label for="">Mata Pelajaran</label>
+                          <input type="text" name="mapel" id="mapel" class="form-control" placeholder="Mata Pelajaran" aria-describedby="helpId">
+                          <small id="helpId" class="text-muted">Help text</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="">Status</label>
+                          <select name="status" class="form-control" id="status">
+                            <option value="">-- Pilih Status --</option>
+                            <option value="S">Sakit</option>
+                            <option value="I">Izin</option>
+                            <option value="A">Alfa</option>
+                          </select>
+                          <small id="helpId" class="text-muted">Help text</small>
+                        </div>
+                        <div class="form-group">
+                          <label for="">Keterangan</label>
+                          <textarea name="keterangan" class="form-control" id="keterangan" cols="30" rows="10"></textarea>
+                          <small id="helpId" class="text-muted">Help text</small>
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -124,21 +169,19 @@
             });
         }
 
-        show_modal = () => {
+        modalAddGuru = () => {
             sessionStorage.setItem('TY', 'POST');
             $("#form-add")[0].reset();
             $("#form-add").attr('action', `{{ url('api/kelas') }}`);
             $('.text-error').text('');
-            data_guru(() => {
-                $('.modal-add-title').text('Tambah Kelas');
-                $('#modal-add').modal('show');
-            });
+            $('.modal-add-title').text('Tambah Piket Guru');
+            $('#modalAddGuru').modal('show');
         }
 
         edit_data = (id) => {
-            sessionStorage.setItem('TY','PUT');
+            sessionStorage.setItem('TY', 'PUT');
             $("#form-add")[0].reset();
-            $("#form-add").attr('action', `${BASE_URL}/api/kelas/${id}`,);
+            $("#form-add").attr('action', `${BASE_URL}/api/kelas/${id}`, );
             data_guru(() => {
                 $.ajax({
                     type: "GET",

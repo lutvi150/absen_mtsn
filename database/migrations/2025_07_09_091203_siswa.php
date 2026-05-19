@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nama_siswa');
             $table->string('nisn')->unique();
+            $table->string('nik', 16)->unique();
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('tingkat_rombel');
+            $table->text('alamat');
             $table->enum('jenis_kelamin', ['L', 'P'])->default('L');
             $table->integer('id_kelas');
             $table->text('foto')->nullable();
